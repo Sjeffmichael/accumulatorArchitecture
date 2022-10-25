@@ -1,0 +1,159 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.IO;
+
+namespace accumulator_MachineSimulator1to2
+{
+    public partial class Form1 : Form
+    {
+        //Esta var indica el archivo que tenemos abierto actualmente
+        string actualFilePath = null;
+        RegexLexer csLexer = new RegexLexer();
+        List<string> palabrasReservadas;
+        bool load;
+
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //=============================
+        //Administracion de archivos
+        //=============================
+        private void OpenFile() //Maykol
+        {
+            
+        }
+
+        private void SaveFile(string path, string text) //Wer
+        {
+            System.IO.File.WriteAllText(path, text);
+        }
+
+        //-------------Cuando un usuario quiere Guardar un nuevo archivo-------------//
+        private void ShowDialogSave()
+        {
+            saveFileDialog1.Filter = "asm files (*.asm)|*.asm";
+            saveFileDialog1.Title = "Crear nuevo archivo";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                actualFilePath = saveFileDialog1.FileName;
+                SaveFile(actualFilePath, "");
+            }
+        }
+
+        //-------------Cuando un usuario quiere Abrir un nuevo archivo-------------//
+        private void ShowDialogOpen()
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Title = "Abrir archivo";
+            openFileDialog1.Filter = "asm files (*.asm)|*.asm";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                actualFilePath = openFileDialog1.FileName;
+                txtCodif.Text = System.IO.File.ReadAllText(actualFilePath);
+            }
+        }
+
+        /*Al seleccionar abrir nuevo archivo en el programa*/
+        private void nuevoArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Si existe un archivo ya abierto
+            if (actualFilePath != null)
+            {
+                DialogResult result = MessageBox.Show(
+                    "¿Desea guardar los cambios de este archivo?", 
+                    "¿Guardar?",
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    SaveFile(actualFilePath,txtCodif.Text.ToString());
+                }
+            }
+
+            ShowDialogSave();
+        }
+
+        private void abrirArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowDialogOpen();
+        }
+
+        private void guardarCambiosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFile(actualFilePath, txtCodif.Text.ToString());
+        }
+
+        
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            using (StreamReader sr = new StreamReader(@"..\..\RegexLexer.cs"))
+            {
+                
+                csLexer.AddTokenRule(@"\.code|\.data", "DIRECTIVA");
+                csLexer.AddTokenRule(@"[^\.]\b[_a-zA-Z][\w]*\b", "IDENTIFICADOR");
+                csLexer.AddTokenRule(@"\d*\.?\d+", "NUMERO");
+                csLexer.AddTokenRule(@"\s+", "ESPACIO", true);
+                csLexer.AddTokenRule(";[^\r\n]*", "COMENTARIO");
+
+                palabrasReservadas = new List<string>() {
+                    "load", "store", "div", "add", "mul", "sub"
+                };
+                csLexer.Compile(RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.ExplicitCapture);
+
+                load = true;
+                AnalizeCode();
+                txtCodif.Focus();
+                
+            }
+        }
+
+        private void AnalizeCode()
+        {
+            //lvToken.Items.Clear();
+            dgvToken.Rows.Clear();
+
+            int n = 0, e = 0;
+
+            foreach (var tk in csLexer.GetTokens(txtCodif.Text))
+            {
+                if (tk.Name == "ERROR") e++;
+
+                if (tk.Name == "IDENTIFICADOR")
+                    if (palabrasReservadas.Contains(tk.Lexema))
+                        tk.Name = "RESERVADO";
+
+                //lvToken.Items.Add(tk);
+                dgvToken.Rows.Add(tk.Name, tk.Lexema, tk.Linea, tk.Columna, tk.Index);
+                n++;
+            }
+            //var bindingList = new BindingList<Token>();
+            //var source = new BindingSource(bindingList, null);
+            //dgvToken.DataSource = source;
+
+            //this.Title = string.Format("Analizador Lexico - {0} tokens {1} errores", n, e);
+        }
+
+        private void CodeChanged(object sender, EventArgs e)
+        {
+            if (load)
+                AnalizeCode();
+        }
+    }
+}
