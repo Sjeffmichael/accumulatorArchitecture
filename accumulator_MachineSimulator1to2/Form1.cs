@@ -20,6 +20,12 @@ namespace accumulator_MachineSimulator1to2
         List<string> palabrasReservadas;
         bool load;
 
+        /* Delay para llamar una funcion (siempre y cuando no se interrumpa).
+        En este proyecto se usa para analizar el codigo en tiempo real, siempre
+        que el usuario no escriba por mas de 2 segundos*/
+        Timer jumper = new Timer();
+        bool timing = false;
+
 
         public Form1()
         {
@@ -31,9 +37,9 @@ namespace accumulator_MachineSimulator1to2
 
         }
 
-        //=============================
+        //==========================================================
         //Administracion de archivos
-        //=============================
+        //==========================================================
 
         private void SaveFile(string path, string text) //Wer
         {
@@ -134,10 +140,16 @@ namespace accumulator_MachineSimulator1to2
                 load = true;
                 AnalizeCode();
                 txtCodif.Focus();
+
+                jumper.Tick += new EventHandler(jumperTick);
+                jumper.Interval = 2000;
                 
             }
         }
 
+        //==========================================================
+        //Analizador en tiempo Real del codigo
+        //==========================================================
         private void AnalizeCode()
         {
             //lvToken.Items.Clear();
@@ -164,10 +176,34 @@ namespace accumulator_MachineSimulator1to2
             //this.Title = string.Format("Analizador Lexico - {0} tokens {1} errores", n, e);
         }
 
+        //Si el usuario no interrumpe esto se mandara a llamar
+        private void jumperTick(object sender, EventArgs e)
+        {
+            AnalizeCode();
+            jumper.Stop();
+            timing = false;
+        }
+
+        // Si el temporizador ya fue llamado, solo lo reinicia si el usuario sigue escribiendo
+        private void CallJumper()
+        {
+            if (timing)
+            {
+                jumper.Stop();
+                jumper.Start();
+            }
+            else
+            {
+                timing = true;
+                jumper.Start();
+            }
+        }
+
         private void CodeChanged(object sender, EventArgs e)
         {
-            if (load)
-                AnalizeCode();
+            if (!load) return;
+
+            CallJumper();
         }
     }
 }
