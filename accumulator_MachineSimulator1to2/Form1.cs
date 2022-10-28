@@ -245,6 +245,7 @@ namespace accumulator_MachineSimulator1to2
                 if (tk.Name != "COMENTARIO")
                     lineaAnterior = tk.Name;
                 dgvToken.Rows.Add(tk.Name, tk.Lexema, tk.Linea, tk.Columna, tk.Index);
+                dgvToken.FirstDisplayedScrollingRowIndex = dgvToken.RowCount - 1;
                 lineasAnalizadas.Add(tk.Lexema);
                 n++;
             }
