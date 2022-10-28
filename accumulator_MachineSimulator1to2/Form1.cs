@@ -21,7 +21,7 @@ namespace accumulator_MachineSimulator1to2
         Dictionary<string, List<string>> regexLineaPrevia = new Dictionary<string, List<string>>()
         {
             //{"VARIABLE", new Regex(@"\b^((\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*))(\s+)(\bstore)(\s+)([_a-zA-Z][\w]*)\b")},
-            {"DIRECTIVA_DATOS", new List<string>{""}},
+            {"DIRECTIVA_DATOS", new List<string>{"", "COMENTARIO"}},
             {"DIRECTIVA_CODIGO", new List<string>{"VARIABLE"}},
             {"VARIABLE", new List<string>{"ACUMULADOR", "SUMA", "RESTA", "MULTIPLICACION", "DIVISION"}},
             {"ACUMULADOR", new List<string>{"VARIABLE", "SUMA", "RESTA", "MULTIPLICACION", "DIVISION", "DIRECTIVA_DATOS", "ACUMULADOR", "DIRECTIVA_CODIGO"}},
@@ -29,12 +29,6 @@ namespace accumulator_MachineSimulator1to2
             {"RESTA", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
             {"MULTIPLICACION", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
             {"DIVISION", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
-            
-            //{"ACUMULADOR", ""},
-            //{"SUMA", ""},
-            //{"RESTA", ""},
-            //{"MULTIPLICACION", ""},
-            //{"DIVISION", ""}
         };
 
         /* Delay para llamar una funcion (siempre y cuando no se interrumpa).
@@ -144,7 +138,7 @@ namespace accumulator_MachineSimulator1to2
 
             using (StreamReader sr = new StreamReader(@"..\..\RegexLexer.cs"))
             {
-                csLexer.AddTokenRule(@"^\.data", "DIRECTIVA_DATOS");
+                csLexer.AddTokenRule(@"((\s*|)(\.data))", "DIRECTIVA_DATOS");
                 csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
                 //csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
                 //csLexer.AddTokenRule(@"^((\s*)(\.code))|\.data", "DIRECTIVA");
