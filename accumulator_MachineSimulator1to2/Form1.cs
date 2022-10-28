@@ -37,6 +37,12 @@ namespace accumulator_MachineSimulator1to2
             //{"DIVISION", ""}
         };
 
+        /* Delay para llamar una funcion (siempre y cuando no se interrumpa).
+        En este proyecto se usa para analizar el codigo en tiempo real, siempre
+        que el usuario no escriba por mas de 2 segundos*/
+        Timer jumper = new Timer();
+        bool timing = false;
+
 
         public Form1()
         {
@@ -48,13 +54,9 @@ namespace accumulator_MachineSimulator1to2
 
         }
 
-        //=============================
+        //==========================================================
         //Administracion de archivos
-        //=============================
-        private void OpenFile() //Maykol
-        {
-            
-        }
+        //==========================================================
 
         private void SaveFile(string path, string text) //Wer
         {
@@ -62,14 +64,14 @@ namespace accumulator_MachineSimulator1to2
         }
 
         //-------------Cuando un usuario quiere Guardar un nuevo archivo-------------//
-        private void ShowDialogSave()
+        private void ShowDialogSave(string text)
         {
             saveFileDialog1.Filter = "asm files (*.asm)|*.asm";
             saveFileDialog1.Title = "Crear nuevo archivo";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 actualFilePath = saveFileDialog1.FileName;
-                SaveFile(actualFilePath, "");
+                SaveFile(actualFilePath, text);
             }
         }
 
@@ -83,6 +85,7 @@ namespace accumulator_MachineSimulator1to2
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 actualFilePath = openFileDialog1.FileName;
+
                 txtCodif.Text = System.IO.File.ReadAllText(actualFilePath);
             }
         }
@@ -103,16 +106,33 @@ namespace accumulator_MachineSimulator1to2
                 }
             }
 
-            ShowDialogSave();
+            ShowDialogSave("");
         }
 
         private void abrirArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //Si existe un archivo ya abierto
+            if (actualFilePath != null)
+            {
+                DialogResult result = MessageBox.Show(
+                    "¿Desea guardar los cambios de este archivo?",
+                    "¿Guardar?",
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    SaveFile(actualFilePath, txtCodif.Text.ToString());
+                }
+            }
+
             ShowDialogOpen();
         }
 
         private void guardarCambiosToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (actualFilePath == null)
+            {
+                ShowDialogSave(txtCodif.Text.ToString());
+            }
             SaveFile(actualFilePath, txtCodif.Text.ToString());
         }
 
@@ -147,6 +167,9 @@ namespace accumulator_MachineSimulator1to2
                 load = true;
                 AnalizeCode();
                 txtCodif.Focus();
+
+                jumper.Tick += new EventHandler(jumperTick);
+                jumper.Interval = 2000;
                 
             }
         }
@@ -175,6 +198,9 @@ namespace accumulator_MachineSimulator1to2
             }
         }
 
+        //==========================================================
+        //Analizador en tiempo Real del codigo
+        //==========================================================
         private void AnalizeCode()
         {
             variablesExistentes();
@@ -231,10 +257,34 @@ namespace accumulator_MachineSimulator1to2
 
         }
 
+        //Si el usuario no interrumpe esto se mandara a llamar
+        private void jumperTick(object sender, EventArgs e)
+        {
+            AnalizeCode();
+            jumper.Stop();
+            timing = false;
+        }
+
+        // Si el temporizador ya fue llamado, solo lo reinicia si el usuario sigue escribiendo
+        private void CallJumper()
+        {
+            if (timing)
+            {
+                jumper.Stop();
+                jumper.Start();
+            }
+            else
+            {
+                timing = true;
+                jumper.Start();
+            }
+        }
+
         private void CodeChanged(object sender, EventArgs e)
         {
-            if (load)
-                AnalizeCode();
+            if (!load) return;
+
+            CallJumper();
         }
     }
 }
