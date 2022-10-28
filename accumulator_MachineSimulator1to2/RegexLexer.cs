@@ -9,9 +9,9 @@ namespace accumulator_MachineSimulator1to2
 {
     internal class RegexLexer
     {
-        Regex rex;
-        StringBuilder patron;
-        bool requiereCompilar;
+        public Regex rex;
+        public StringBuilder patron;
+        public bool requiereCompilar;
         List<string> TNames;
         int[] GNumbers;
 

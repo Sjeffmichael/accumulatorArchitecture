@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.IO;
+using System.Windows.Forms;
 
 namespace accumulator_MachineSimulator1to2
 {
@@ -18,7 +14,28 @@ namespace accumulator_MachineSimulator1to2
         string actualFilePath = null;
         RegexLexer csLexer = new RegexLexer();
         List<string> palabrasReservadas;
+        List<string> variablesDeclaradas = new List<string>();
         bool load;
+        string regexAcumulador;
+        Regex regexValidVar = new Regex(@"[_a-zA-Z][\w]*");
+        Dictionary<string, List<string>> regexLineaPrevia = new Dictionary<string, List<string>>()
+        {
+            //{"VARIABLE", new Regex(@"\b^((\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*))(\s+)(\bstore)(\s+)([_a-zA-Z][\w]*)\b")},
+            {"DIRECTIVA_DATOS", new List<string>{""}},
+            {"DIRECTIVA_CODIGO", new List<string>{"VARIABLE"}},
+            {"VARIABLE", new List<string>{"ACUMULADOR", "SUMA", "RESTA", "MULTIPLICACION", "DIVISION"}},
+            {"ACUMULADOR", new List<string>{"VARIABLE", "SUMA", "RESTA", "MULTIPLICACION", "DIVISION", "DIRECTIVA_DATOS", "ACUMULADOR", "DIRECTIVA_CODIGO"}},
+            {"SUMA", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
+            {"RESTA", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
+            {"MULTIPLICACION", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
+            {"DIVISION", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
+            
+            //{"ACUMULADOR", ""},
+            //{"SUMA", ""},
+            //{"RESTA", ""},
+            //{"MULTIPLICACION", ""},
+            //{"DIVISION", ""}
+        };
 
 
         public Form1()
@@ -103,12 +120,22 @@ namespace accumulator_MachineSimulator1to2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            regexAcumulador = @"\b(\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)\b";
+
             using (StreamReader sr = new StreamReader(@"..\..\RegexLexer.cs"))
             {
-                
-                csLexer.AddTokenRule(@"\.code|\.data", "DIRECTIVA");
-                csLexer.AddTokenRule(@"[^\.]\b[_a-zA-Z][\w]*\b", "IDENTIFICADOR");
-                csLexer.AddTokenRule(@"\d*\.?\d+", "NUMERO");
+                csLexer.AddTokenRule(@"^\.data", "DIRECTIVA_DATOS");
+                csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
+                //csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
+                //csLexer.AddTokenRule(@"^((\s*)(\.code))|\.data", "DIRECTIVA");
+                //csLexer.AddTokenRule(@"\b^((\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*))(\s+)(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE_PRESEDENCIA", true);
+                csLexer.AddTokenRule(@"\b(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE");
+                csLexer.AddTokenRule(regexAcumulador, "ACUMULADOR");
+                csLexer.AddTokenRule(@"(\badd)(\s+)(\d*\.?\d+)", "SUMA");
+                csLexer.AddTokenRule(@"(\bsub)(\s+)(\d*\.?\d+)", "RESTA");
+                csLexer.AddTokenRule(@"(\bmul)(\s+)(\d*\.?\d+)", "MULTIPLICACION");
+                csLexer.AddTokenRule(@"(\bdiv)(\s+)(\d*\.?\d+)", "DIVISION");
+                //csLexer.AddTokenRule(@"\d*\.?\d+", "NUMERO");
                 csLexer.AddTokenRule(@"\s+", "ESPACIO", true);
                 csLexer.AddTokenRule(";[^\r\n]*", "COMENTARIO");
 
@@ -124,30 +151,84 @@ namespace accumulator_MachineSimulator1to2
             }
         }
 
+        private bool validarLineaAnterior(string ultimaLinea, string token)
+        {
+            if (token != "ERROR")
+            {
+                regexLineaPrevia.TryGetValue(token, out List<string> regex);
+
+                    return regex.Contains(ultimaLinea);
+            }
+
+            return false;
+            
+        }
+
+        private void variablesExistentes()
+        {
+            foreach (string variable in variablesDeclaradas.ToList())
+            {
+                if (!txtCodif.Text.Contains("store " + variable))
+                {
+                    variablesDeclaradas.Remove(variable);
+                }
+            }
+        }
+
         private void AnalizeCode()
         {
-            //lvToken.Items.Clear();
+            variablesExistentes();
             dgvToken.Rows.Clear();
+            List<string> lineasAnalizadas = new List<string>();
+            string lineaAnterior = "";
+            lineasAnalizadas.Add("");
 
             int n = 0, e = 0;
 
             foreach (var tk in csLexer.GetTokens(txtCodif.Text))
             {
-                if (tk.Name == "ERROR") e++;
+                if (tk.Name != "COMENTARIO")
+                    if (!validarLineaAnterior(lineaAnterior, tk.Name))
+                        tk.Name = "ERROR";
+
+                //if (tk.Name == "ERROR") e++;
 
                 if (tk.Name == "IDENTIFICADOR")
                     if (palabrasReservadas.Contains(tk.Lexema))
                         tk.Name = "RESERVADO";
 
-                //lvToken.Items.Add(tk);
+
+                if (tk.Name == "ACUMULADOR" && tk.Lexema.Split(' ').Count() == 2)
+                {
+                    string DeclareVar = tk.Lexema.Split(' ')[1];
+
+                    if (
+                        regexValidVar.IsMatch(DeclareVar)
+                        && !lineasAnalizadas.Contains("store " + DeclareVar)
+                    )
+                    {
+                        tk.Name = "ERROR";
+                    }
+
+                }
+
+                if (tk.Name == "VARIABLE" && tk.Lexema.Split(' ').Count() == 2)
+                {
+                    string newVar = tk.Lexema.Split(' ')[1];
+                    /* Agregar a la lista de variables declaradas */
+                    if (!variablesDeclaradas.Contains(newVar))
+                    {
+                        variablesDeclaradas.Add(newVar);
+                    }
+                }
+
+                if (tk.Name != "COMENTARIO")
+                    lineaAnterior = tk.Name;
                 dgvToken.Rows.Add(tk.Name, tk.Lexema, tk.Linea, tk.Columna, tk.Index);
+                lineasAnalizadas.Add(tk.Lexema);
                 n++;
             }
-            //var bindingList = new BindingList<Token>();
-            //var source = new BindingSource(bindingList, null);
-            //dgvToken.DataSource = source;
 
-            //this.Title = string.Format("Analizador Lexico - {0} tokens {1} errores", n, e);
         }
 
         private void CodeChanged(object sender, EventArgs e)
