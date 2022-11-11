@@ -12,6 +12,7 @@ namespace accumulator_MachineSimulator1to2
     {
         //Esta var indica el archivo que tenemos abierto actualmente
         string actualFilePath = null;
+
         RegexLexer csLexer = new RegexLexer();
         List<string> palabrasReservadas;
         List<string> variablesDeclaradas = new List<string>();
@@ -146,8 +147,7 @@ namespace accumulator_MachineSimulator1to2
             {
                 csLexer.AddTokenRule(@"^\.data", "DIRECTIVA_DATOS");
                 csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
-                //csLexer.AddTokenRule(@"\.code", "DIRECTIVA_CODIGO");
-                //csLexer.AddTokenRule(@"^((\s*)(\.code))|\.data", "DIRECTIVA");
+
                 //csLexer.AddTokenRule(@"\b^((\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*))(\s+)(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE_PRESEDENCIA", true);
                 csLexer.AddTokenRule(@"\b(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE");
                 csLexer.AddTokenRule(regexAcumulador, "ACUMULADOR");
