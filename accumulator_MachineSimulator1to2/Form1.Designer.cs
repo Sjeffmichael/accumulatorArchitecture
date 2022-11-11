@@ -29,16 +29,20 @@ namespace accumulator_MachineSimulator1to2
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.plCpu = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.plInfo = new System.Windows.Forms.Panel();
-            this.console = new System.Windows.Forms.RichTextBox();
+            this.dgvToken = new System.Windows.Forms.DataGridView();
+            this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Indice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.plTopMenu = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -46,9 +50,9 @@ namespace accumulator_MachineSimulator1to2
             this.nuevoArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abrirArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarCambiosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.masToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.console = new System.Windows.Forms.RichTextBox();
             this.plLeft = new System.Windows.Forms.Panel();
-            this.dgvToken = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtCodif = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.plPlayer = new System.Windows.Forms.Panel();
@@ -56,25 +60,26 @@ namespace accumulator_MachineSimulator1to2
             this.btnPause = new System.Windows.Forms.PictureBox();
             this.btnPlay = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Indice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.verToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diagramaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.plCpu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.plInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvToken)).BeginInit();
             this.plTopMenu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.plLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvToken)).BeginInit();
             this.plPlayer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnStop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPause)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPlay)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -84,7 +89,7 @@ namespace accumulator_MachineSimulator1to2
             this.panel1.Controls.Add(this.plTopMenu);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(479, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(705, 561);
             this.panel1.TabIndex = 3;
@@ -92,31 +97,13 @@ namespace accumulator_MachineSimulator1to2
             // plCpu
             // 
             this.plCpu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.plCpu.Controls.Add(this.label4);
-            this.plCpu.Controls.Add(this.pictureBox1);
+            this.plCpu.Controls.Add(this.tabControl1);
             this.plCpu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plCpu.Location = new System.Drawing.Point(0, 59);
-            this.plCpu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.plCpu.Margin = new System.Windows.Forms.Padding(2);
             this.plCpu.Name = "plCpu";
             this.plCpu.Size = new System.Drawing.Size(705, 311);
             this.plCpu.TabIndex = 2;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.pictureBox1.Enabled = false;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(9, 24);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(685, 283);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.WaitOnLoad = true;
             // 
             // plInfo
             // 
@@ -125,25 +112,102 @@ namespace accumulator_MachineSimulator1to2
             this.plInfo.Controls.Add(this.label1);
             this.plInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.plInfo.Location = new System.Drawing.Point(0, 370);
-            this.plInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.plInfo.Margin = new System.Windows.Forms.Padding(2);
             this.plInfo.Name = "plInfo";
             this.plInfo.Size = new System.Drawing.Size(705, 191);
             this.plInfo.TabIndex = 1;
             // 
-            // console
+            // dgvToken
             // 
-            this.console.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.console.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.console.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.console.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.console.ForeColor = System.Drawing.Color.White;
-            this.console.Location = new System.Drawing.Point(11, 397);
-            this.console.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.console.Name = "console";
-            this.console.ReadOnly = true;
-            this.console.Size = new System.Drawing.Size(464, 153);
-            this.console.TabIndex = 1;
-            this.console.Text = "";
+            this.dgvToken.AllowUserToAddRows = false;
+            this.dgvToken.AllowUserToDeleteRows = false;
+            this.dgvToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvToken.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvToken.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.dgvToken.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvToken.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            dataGridViewCellStyle29.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle29.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvToken.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle29;
+            this.dgvToken.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Token,
+            this.Lexema,
+            this.Linea,
+            this.Columna,
+            this.Indice});
+            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            dataGridViewCellStyle31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle31.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvToken.DefaultCellStyle = dataGridViewCellStyle31;
+            this.dgvToken.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.dgvToken.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.dgvToken.Location = new System.Drawing.Point(9, 28);
+            this.dgvToken.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvToken.Name = "dgvToken";
+            this.dgvToken.ReadOnly = true;
+            this.dgvToken.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle32.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.Color.Purple;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvToken.RowHeadersDefaultCellStyle = dataGridViewCellStyle32;
+            this.dgvToken.RowHeadersWidth = 51;
+            this.dgvToken.RowTemplate.Height = 24;
+            this.dgvToken.Size = new System.Drawing.Size(685, 152);
+            this.dgvToken.TabIndex = 3;
+            // 
+            // Token
+            // 
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            dataGridViewCellStyle30.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle30.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.ControlLight;
+            this.Token.DefaultCellStyle = dataGridViewCellStyle30;
+            this.Token.HeaderText = "Token";
+            this.Token.MinimumWidth = 6;
+            this.Token.Name = "Token";
+            this.Token.ReadOnly = true;
+            // 
+            // Lexema
+            // 
+            this.Lexema.HeaderText = "Lexema";
+            this.Lexema.MinimumWidth = 6;
+            this.Lexema.Name = "Lexema";
+            this.Lexema.ReadOnly = true;
+            // 
+            // Linea
+            // 
+            this.Linea.HeaderText = "Linea";
+            this.Linea.MinimumWidth = 6;
+            this.Linea.Name = "Linea";
+            this.Linea.ReadOnly = true;
+            // 
+            // Columna
+            // 
+            this.Columna.HeaderText = "Columna";
+            this.Columna.MinimumWidth = 6;
+            this.Columna.Name = "Columna";
+            this.Columna.ReadOnly = true;
+            // 
+            // Indice
+            // 
+            this.Indice.HeaderText = "Indice";
+            this.Indice.MinimumWidth = 6;
+            this.Indice.Name = "Indice";
+            this.Indice.ReadOnly = true;
             // 
             // label1
             // 
@@ -163,7 +227,7 @@ namespace accumulator_MachineSimulator1to2
             this.plTopMenu.Controls.Add(this.menuStrip1);
             this.plTopMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.plTopMenu.Location = new System.Drawing.Point(0, 0);
-            this.plTopMenu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.plTopMenu.Margin = new System.Windows.Forms.Padding(2);
             this.plTopMenu.Name = "plTopMenu";
             this.plTopMenu.Size = new System.Drawing.Size(705, 59);
             this.plTopMenu.TabIndex = 0;
@@ -176,7 +240,7 @@ namespace accumulator_MachineSimulator1to2
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.masToolStripMenuItem,
-            this.masToolStripMenuItem1});
+            this.verToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
@@ -226,13 +290,20 @@ namespace accumulator_MachineSimulator1to2
             this.guardarCambiosToolStripMenuItem.Text = "Guardar cambios";
             this.guardarCambiosToolStripMenuItem.Click += new System.EventHandler(this.guardarCambiosToolStripMenuItem_Click);
             // 
-            // masToolStripMenuItem1
+            // console
             // 
-            this.masToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.masToolStripMenuItem1.ForeColor = System.Drawing.Color.White;
-            this.masToolStripMenuItem1.Name = "masToolStripMenuItem1";
-            this.masToolStripMenuItem1.Size = new System.Drawing.Size(60, 55);
-            this.masToolStripMenuItem1.Text = "Mas...";
+            this.console.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.console.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.console.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.console.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.console.ForeColor = System.Drawing.Color.White;
+            this.console.Location = new System.Drawing.Point(11, 397);
+            this.console.Margin = new System.Windows.Forms.Padding(2);
+            this.console.Name = "console";
+            this.console.ReadOnly = true;
+            this.console.Size = new System.Drawing.Size(464, 153);
+            this.console.TabIndex = 1;
+            this.console.Text = "";
             // 
             // plLeft
             // 
@@ -244,62 +315,23 @@ namespace accumulator_MachineSimulator1to2
             this.plLeft.Controls.Add(this.plPlayer);
             this.plLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.plLeft.Location = new System.Drawing.Point(0, 0);
-            this.plLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.plLeft.Margin = new System.Windows.Forms.Padding(2);
             this.plLeft.Name = "plLeft";
             this.plLeft.Size = new System.Drawing.Size(479, 561);
             this.plLeft.TabIndex = 2;
             // 
-            // dgvToken
+            // label3
             // 
-            this.dgvToken.AllowUserToAddRows = false;
-            this.dgvToken.AllowUserToDeleteRows = false;
-            this.dgvToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvToken.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvToken.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.dgvToken.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvToken.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvToken.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvToken.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Token,
-            this.Lexema,
-            this.Linea,
-            this.Columna,
-            this.Indice});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvToken.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvToken.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.dgvToken.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.dgvToken.Location = new System.Drawing.Point(9, 28);
-            this.dgvToken.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.dgvToken.Name = "dgvToken";
-            this.dgvToken.ReadOnly = true;
-            this.dgvToken.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Purple;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvToken.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvToken.RowHeadersWidth = 51;
-            this.dgvToken.RowTemplate.Height = 24;
-            this.dgvToken.Size = new System.Drawing.Size(685, 152);
-            this.dgvToken.TabIndex = 3;
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(11, 372);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 20);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Consola";
             // 
             // txtCodif
             // 
@@ -310,7 +342,7 @@ namespace accumulator_MachineSimulator1to2
             this.txtCodif.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCodif.ForeColor = System.Drawing.Color.White;
             this.txtCodif.Location = new System.Drawing.Point(11, 83);
-            this.txtCodif.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCodif.Margin = new System.Windows.Forms.Padding(2);
             this.txtCodif.Name = "txtCodif";
             this.txtCodif.Size = new System.Drawing.Size(464, 287);
             this.txtCodif.TabIndex = 2;
@@ -337,7 +369,7 @@ namespace accumulator_MachineSimulator1to2
             this.plPlayer.Controls.Add(this.btnPlay);
             this.plPlayer.Dock = System.Windows.Forms.DockStyle.Top;
             this.plPlayer.Location = new System.Drawing.Point(0, 0);
-            this.plPlayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.plPlayer.Margin = new System.Windows.Forms.Padding(2);
             this.plPlayer.Name = "plPlayer";
             this.plPlayer.Size = new System.Drawing.Size(479, 59);
             this.plPlayer.TabIndex = 0;
@@ -377,70 +409,68 @@ namespace accumulator_MachineSimulator1to2
             this.btnPlay.TabStop = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
-            // label3
+            // verToolStripMenuItem
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(11, 372);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 20);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Consola";
+            this.verToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.diagramaToolStripMenuItem});
+            this.verToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.verToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.verToolStripMenuItem.Name = "verToolStripMenuItem";
+            this.verToolStripMenuItem.Size = new System.Drawing.Size(45, 55);
+            this.verToolStripMenuItem.Text = "Ver";
             // 
-            // label4
+            // diagramaToolStripMenuItem
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(5, 2);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 20);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Diagrama";
+            this.diagramaToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.diagramaToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.diagramaToolStripMenuItem.Name = "diagramaToolStripMenuItem";
+            this.diagramaToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.diagramaToolStripMenuItem.Text = "Diagrama";
+            this.diagramaToolStripMenuItem.Click += new System.EventHandler(this.diagramaToolStripMenuItem_Click);
             // 
-            // Token
+            // tabControl1
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlLight;
-            this.Token.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Token.HeaderText = "Token";
-            this.Token.MinimumWidth = 6;
-            this.Token.Name = "Token";
-            this.Token.ReadOnly = true;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(705, 311);
+            this.tabControl1.TabIndex = 0;
             // 
-            // Lexema
+            // tabPage1
             // 
-            this.Lexema.HeaderText = "Lexema";
-            this.Lexema.MinimumWidth = 6;
-            this.Lexema.Name = "Lexema";
-            this.Lexema.ReadOnly = true;
+            this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tabPage1.Controls.Add(this.pictureBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(697, 285);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "CPU";
             // 
-            // Linea
+            // tabPage2
             // 
-            this.Linea.HeaderText = "Linea";
-            this.Linea.MinimumWidth = 6;
-            this.Linea.Name = "Linea";
-            this.Linea.ReadOnly = true;
+            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(689, 275);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "E / S";
             // 
-            // Columna
+            // pictureBox1
             // 
-            this.Columna.HeaderText = "Columna";
-            this.Columna.MinimumWidth = 6;
-            this.Columna.Name = "Columna";
-            this.Columna.ReadOnly = true;
-            // 
-            // Indice
-            // 
-            this.Indice.HeaderText = "Indice";
-            this.Indice.MinimumWidth = 6;
-            this.Indice.Name = "Indice";
-            this.Indice.ReadOnly = true;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = global::accumulator_MachineSimulator1to2.Properties.Resources.CPU;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(691, 279);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -449,28 +479,29 @@ namespace accumulator_MachineSimulator1to2
             this.ClientSize = new System.Drawing.Size(1184, 561);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.plLeft);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(1200, 600);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.plCpu.ResumeLayout(false);
-            this.plCpu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.plInfo.ResumeLayout(false);
             this.plInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvToken)).EndInit();
             this.plTopMenu.ResumeLayout(false);
             this.plTopMenu.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.plLeft.ResumeLayout(false);
             this.plLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvToken)).EndInit();
             this.plPlayer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnStop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPause)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPlay)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -479,14 +510,12 @@ namespace accumulator_MachineSimulator1to2
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel plCpu;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel plInfo;
         private System.Windows.Forms.RichTextBox console;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel plTopMenu;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem masToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem masToolStripMenuItem1;
         private System.Windows.Forms.Panel plLeft;
         private System.Windows.Forms.RichTextBox txtCodif;
         private System.Windows.Forms.Label label2;
@@ -500,12 +529,17 @@ namespace accumulator_MachineSimulator1to2
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.DataGridView dgvToken;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Token;
         private System.Windows.Forms.DataGridViewTextBoxColumn Lexema;
         private System.Windows.Forms.DataGridViewTextBoxColumn Linea;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna;
         private System.Windows.Forms.DataGridViewTextBoxColumn Indice;
+        private System.Windows.Forms.ToolStripMenuItem verToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem diagramaToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

@@ -32,11 +32,18 @@ namespace accumulator_MachineSimulator1to2
             {"DIVISION", new List<string>{ "ACUMULADOR", "RESTA", "MULTIPLICACION", "DIVISION"}},
         };
 
-        /* Delay para llamar una funcion (siempre y cuando no se interrumpa).
-        En este proyecto se usa para analizar el codigo en tiempo real, siempre
-        que el usuario no escriba por mas de 2 segundos*/
+        //==========================================================
+        //Delay para llamar una funcion (siempre y cuando no se interrumpa).
+        //En este proyecto se usa para analizar el codigo en tiempo real, siempre
+        //que el usuario no escriba por mas de 2 segundos
+        //==========================================================
         Timer jumper = new Timer();
         bool timing = false;
+
+        //==========================================================
+        //Formulario para enseñar el diagrama
+        //==========================================================
+        private Diagram diagrama = null;
 
 
         public Form1()
@@ -285,6 +292,21 @@ namespace accumulator_MachineSimulator1to2
             if (!load) return;
 
             CallJumper();
+        }
+
+        private void diagramaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (diagrama == null)
+            {
+                diagrama = new Diagram();
+                diagrama.Show();
+            } 
+            else
+            {
+                diagrama.Close();
+                diagrama = null;
+            }
+            
         }
     }
 }
