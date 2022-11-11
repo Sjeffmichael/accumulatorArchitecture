@@ -144,11 +144,11 @@ namespace accumulator_MachineSimulator1to2
                 //csLexer.AddTokenRule(@"^((\s*)(\.code))|\.data", "DIRECTIVA");
                 //csLexer.AddTokenRule(@"\b^((\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*))(\s+)(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE_PRESEDENCIA", true);
                 csLexer.AddTokenRule(@"\b(\bstore)(\s+)([_a-zA-Z][\w]*)\b", "VARIABLE");
-                csLexer.AddTokenRule(regexAcumulador, "ACUMULADOR");
-                csLexer.AddTokenRule(@"(\badd)(\s+)(\d*\.?\d+)", "SUMA");
-                csLexer.AddTokenRule(@"(\bsub)(\s+)(\d*\.?\d+)", "RESTA");
-                csLexer.AddTokenRule(@"(\bmul)(\s+)(\d*\.?\d+)", "MULTIPLICACION");
-                csLexer.AddTokenRule(@"(\bdiv)(\s+)(\d*\.?\d+)", "DIVISION");
+                csLexer.AddTokenRule(@"\b(\bload)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)\b", "ACUMULADOR");
+                csLexer.AddTokenRule(@"(\badd)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)", "SUMA");
+                csLexer.AddTokenRule(@"(\bsub)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)", "RESTA");
+                csLexer.AddTokenRule(@"(\bmul)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)", "MULTIPLICACION");
+                csLexer.AddTokenRule(@"(\bdiv)(\s+)((\+|-)*\d*\.?\d+|[_a-zA-Z][\w]*)", "DIVISION");
                 //csLexer.AddTokenRule(@"\d*\.?\d+", "NUMERO");
                 csLexer.AddTokenRule(@"\s+", "ESPACIO", true);
                 csLexer.AddTokenRule(";[^\r\n]*", "COMENTARIO");
@@ -218,7 +218,12 @@ namespace accumulator_MachineSimulator1to2
                         tk.Name = "RESERVADO";
 
 
-                if (tk.Name == "ACUMULADOR" && tk.Lexema.Split(' ').Count() == 2)
+                if ((tk.Name == "ACUMULADOR" 
+                    || tk.Name == "SUMA"
+                    || tk.Name == "RESTA"
+                    || tk.Name == "MULTIPLICACION"
+                    || tk.Name == "DIVISION")
+                    && tk.Lexema.Split(' ').Count() == 2)
                 {
                     string DeclareVar = tk.Lexema.Split(' ')[1];
 
