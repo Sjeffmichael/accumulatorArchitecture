@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Drawing;
+using System.Reflection;
 
 namespace accumulator_MachineSimulator1to2
 {
@@ -12,6 +15,7 @@ namespace accumulator_MachineSimulator1to2
     {
         //Esta var indica el archivo que tenemos abierto actualmente
         string actualFilePath = null;
+        int errors = 0;
 
         RegexLexer csLexer = new RegexLexer();
         List<string> palabrasReservadas;
@@ -37,7 +41,7 @@ namespace accumulator_MachineSimulator1to2
         //En este proyecto se usa para analizar el codigo en tiempo real, siempre
         //que el usuario no escriba por mas de 2 segundos
         //==========================================================
-        Timer jumper = new Timer();
+        System.Windows.Forms.Timer jumper = new System.Windows.Forms.Timer();
         bool timing = false;
 
         //==========================================================
@@ -45,6 +49,10 @@ namespace accumulator_MachineSimulator1to2
         //==========================================================
         private Diagram diagrama = null;
 
+        //==========================================================
+        // Variable logica del acumulador
+        //==========================================================
+        AcumulatorMachine Acumulator;
 
         public Form1()
         {
@@ -53,7 +61,49 @@ namespace accumulator_MachineSimulator1to2
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            if (errors != 0)
+            {
+                MessageBox.Show(
+                    "Imposible empezar con "+errors+" errores",
+                    "Errores"
+                    );
+                return;
+            }
 
+            int posSelected = 0;
+
+            btnPlay.Enabled = false;
+            txtCodif.ReadOnly = false;
+            txtCodif.Focus();
+            dgVars.Rows.Clear();
+            Acumulator.StartMachine();
+
+            Acumulator.RecognizeVars(variablesDeclaradas);
+
+            foreach (DataGridViewRow row in dgvToken.Rows)
+            {
+                // ANIMATION select for each line
+                posSelected = Int32.Parse(row.Cells[4].Value.ToString());
+                txtCodif.Select(
+                    posSelected, 
+                    txtCodif.Lines[Int32.Parse(row.Cells[2].Value.ToString()) - 1].Length
+                );
+                txtCodif.SelectionColor = Color.AliceBlue;
+
+                lbMAR.Text = row.Cells[2].Value.ToString();
+
+                Acumulator.ProcessLine(row);
+
+                Task.Run(async delegate
+                {
+                    await Acumulator.Esperar(3000);
+                }).Wait();
+                txtCodif.SelectionColor = Color.White;
+            }
+
+            Acumulator.StopMachine();
+            btnPlay.Enabled = true;
+            txtCodif.ReadOnly = false;
         }
 
         //==========================================================
@@ -171,7 +221,9 @@ namespace accumulator_MachineSimulator1to2
 
                 jumper.Tick += new EventHandler(jumperTick);
                 jumper.Interval = 2000;
-                
+
+                Acumulator = new AcumulatorMachine(
+                    lbX, lbY, lbZ, lbOperator, lbPC, lbInst, lbMAR, lbMDR, console, dgVars);
             }
         }
 
@@ -210,7 +262,8 @@ namespace accumulator_MachineSimulator1to2
             string lineaAnterior = "";
             lineasAnalizadas.Add("");
 
-            int n = 0, e = 0;
+            int n = 0;
+            errors = 0;
 
             foreach (var tk in csLexer.GetTokens(txtCodif.Text))
             {
@@ -218,7 +271,7 @@ namespace accumulator_MachineSimulator1to2
                     if (!validarLineaAnterior(lineaAnterior, tk.Name))
                         tk.Name = "ERROR";
 
-                //if (tk.Name == "ERROR") e++;
+                if (tk.Name == "ERROR") errors++;
 
                 if (tk.Name == "IDENTIFICADOR")
                     if (palabrasReservadas.Contains(tk.Lexema))
@@ -240,6 +293,7 @@ namespace accumulator_MachineSimulator1to2
                     )
                     {
                         tk.Name = "ERROR";
+                        errors++;
                     }
 
                 }
@@ -267,6 +321,7 @@ namespace accumulator_MachineSimulator1to2
         //Si el usuario no interrumpe esto se mandara a llamar
         private void jumperTick(object sender, EventArgs e)
         {
+            btnPlay.Enabled = true;
             AnalizeCode();
             jumper.Stop();
             timing = false;
@@ -275,6 +330,7 @@ namespace accumulator_MachineSimulator1to2
         // Si el temporizador ya fue llamado, solo lo reinicia si el usuario sigue escribiendo
         private void CallJumper()
         {
+            btnPlay.Enabled = false;
             if (timing)
             {
                 jumper.Stop();
@@ -307,6 +363,12 @@ namespace accumulator_MachineSimulator1to2
                 diagrama = null;
             }
             
+        }
+
+        private void operacionesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string actualPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            txtCodif.Text = System.IO.File.ReadAllText(actualPath+ "/Examples/AllOps.asm");
         }
     }
 }
