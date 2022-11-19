@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
+using System.Threading;
 
 namespace accumulator_MachineSimulator1to2
 {
@@ -54,6 +55,8 @@ namespace accumulator_MachineSimulator1to2
         //==========================================================
         AcumulatorMachine Acumulator;
 
+        bool interrupt = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -70,22 +73,29 @@ namespace accumulator_MachineSimulator1to2
                 return;
             }
 
-            int posSelected = 0;
-
             btnPlay.Enabled = false;
             txtCodif.ReadOnly = false;
-            txtCodif.Focus();
             dgVars.Rows.Clear();
             Acumulator.StartMachine();
 
             Acumulator.RecognizeVars(variablesDeclaradas);
 
+            CPUClockAsync();
+        }
+
+        //==========================================================
+        //CPU LOGICS in animation
+        //==========================================================
+        private async Task CPUClockAsync()
+        {
+            int posSelected = 0;
             foreach (DataGridViewRow row in dgvToken.Rows)
             {
+                txtCodif.Focus();
                 // ANIMATION select for each line
                 posSelected = Int32.Parse(row.Cells[4].Value.ToString());
                 txtCodif.Select(
-                    posSelected, 
+                    posSelected,
                     txtCodif.Lines[Int32.Parse(row.Cells[2].Value.ToString()) - 1].Length
                 );
                 txtCodif.SelectionColor = Color.AliceBlue;
@@ -94,13 +104,17 @@ namespace accumulator_MachineSimulator1to2
 
                 Acumulator.ProcessLine(row);
 
-                Task.Run(async delegate
-                {
-                    await Acumulator.Esperar(3000);
-                }).Wait();
-                txtCodif.SelectionColor = Color.White;
-            }
+                await Task.Delay(2000);
 
+                txtCodif.SelectionColor = Color.White;
+
+                if (interrupt)
+                {
+                    console.Text += "Interrupción E/S\n";
+                    interrupt = false;
+                    ChangeLed();
+                }
+            }
             Acumulator.StopMachine();
             btnPlay.Enabled = true;
             txtCodif.ReadOnly = false;
@@ -318,6 +332,7 @@ namespace accumulator_MachineSimulator1to2
 
         }
 
+        //=================================================
         //Si el usuario no interrumpe esto se mandara a llamar
         private void jumperTick(object sender, EventArgs e)
         {
@@ -327,6 +342,7 @@ namespace accumulator_MachineSimulator1to2
             timing = false;
         }
 
+        //=================================================
         // Si el temporizador ya fue llamado, solo lo reinicia si el usuario sigue escribiendo
         private void CallJumper()
         {
@@ -343,6 +359,9 @@ namespace accumulator_MachineSimulator1to2
             }
         }
 
+
+        //=================================================
+        //Cada vez Que escribo en el codificador, esta funcion es llamada
         private void CodeChanged(object sender, EventArgs e)
         {
             if (!load) return;
@@ -369,6 +388,46 @@ namespace accumulator_MachineSimulator1to2
         {
             string actualPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             txtCodif.Text = System.IO.File.ReadAllText(actualPath+ "/Examples/AllOps.asm");
+        }
+
+        private void btnSwitch_Click(object sender, EventArgs e)
+        {
+            interrupt = true;
+            ChangeSwitch();
+        }
+
+        private void ChangeSwitch()
+        {
+            if (lbPort1.Text.Equals("0"))
+            {
+                lbPort1.Text = "1";
+                btnSwitch.Text = "ON";
+                btnSwitch.TextAlign = ContentAlignment.MiddleRight;
+                btnSwitch.BackColor = Color.Green;
+            }
+            else
+            {
+                lbPort1.Text = "0";
+                btnSwitch.Text = "OFF";
+                btnSwitch.TextAlign = ContentAlignment.MiddleLeft;
+                btnSwitch.BackColor = Color.Red;
+            }
+                
+        }
+
+        private void ChangeLed()
+        {
+            if (lbPort1.Text.Equals("0"))
+            {
+                lbPort0.Text = "0";
+                LED.BackColor = Color.Black;
+            }
+            else
+            {
+                lbPort0.Text = "1";
+                LED.BackColor = Color.Red;                
+            }
+
         }
     }
 }
